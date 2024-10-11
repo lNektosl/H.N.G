@@ -12,32 +12,65 @@ public class Player : MonoBehaviour {
     public static event Action<int> OnMoved;
 
     private float moveDistance = 1f;
+    private float timeGapBetweenMovment = 0.3f;
     private int moveCost = 1;
+    private bool isMoving = false;
+    private bool isReadyToMove = true;
 
     public void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(this);
-        }
-        else {
+        } else {
             Instance = this;
         }
     }
+
     private void Start() {
-        input.OnMovePerformed += HandleMovment;
+        input.OnMovePerformed += StartMovement;
+        input.OnMoveCanceled += StopMovement;
     }
 
-    private void OnDisable() {
-        input.OnMovePerformed -= HandleMovment;
-    }
-
-    private void HandleMovment(Vector2 dir) {
-        if (IsCanMove(dir) && EnergyController.Instance.GetCurrentEnergy() >= moveCost) {
-            transform.position += (Vector3)dir;
-            OnMoved?.Invoke(moveCost);
+    private void FixedUpdate() {
+        if (isMoving && isReadyToMove) {
+            HandleMovment();
         }
     }
 
+    private void OnDestroy() {
+        input.OnMovePerformed -= StartMovement;
+        input.OnMoveCanceled -= StopMovement;
+    }
+
+    private void HandleMovment() {
+        Vector2 dir = input.GetVector2();
+
+        if (IsCanMove(dir) && EnergyController.Instance.GetCurrentEnergy() >= moveCost) {
+            transform.position += (Vector3)dir;
+            isReadyToMove = false;
+            OnMoved?.Invoke(moveCost);
+            StartCoroutine(ResetIsReadyToMove());
+        }
+    }
+
+
+    private void StartMovement() {
+        isMoving = true;
+    }
+    private void StopMovement() {
+        isMoving = false;
+    }
+
+    private IEnumerator ResetIsReadyToMove() {
+        yield return new WaitForSeconds(timeGapBetweenMovment);
+        isReadyToMove = true;
+    }
+
     private bool IsCanMove(Vector2 dir) {
+
+        if (!isReadyToMove)
+            return false;
+        if (dir.x == dir.y)
+            return false;
 
         RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, dir, moveDistance, ~mask);
 

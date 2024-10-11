@@ -29,12 +29,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Move"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""570d87d9-a865-4504-a66c-ec7bcc042743"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": ""NormalizeVector2"",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Select"",

@@ -25,6 +25,13 @@ public class EnergyController : MonoBehaviour {
 
         Player.OnMoved += SpendEnergy;
         CardManager.OnCardActivated += (card) => SpendEnergy(card.GetCardSO().energy);
+        TurnManager.OnPlayerTurnStart += ResetEnergy;
+    }
+
+    private void OnDestroy() {
+        Player.OnMoved -= SpendEnergy;
+        CardManager.OnCardActivated -= (card) => SpendEnergy(card.GetCardSO().energy);
+        TurnManager.OnPlayerTurnStart -= ResetEnergy;
     }
 
     private void AddEnergy(int energy) {

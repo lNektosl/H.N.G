@@ -30,14 +30,16 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
         AddToStart();
     }
 
-    protected virtual void AddToStart() {}
+    protected virtual void AddToStart() { }
     public void OnPointerEnter(PointerEventData eventData) {
-        if (isDragging) return;
+        if (isDragging)
+            return;
         OnCardEnter?.Invoke(this);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        if (isDragging) return;
+        if (isDragging)
+            return;
         OnCardExit?.Invoke();
     }
 
@@ -80,7 +82,7 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
     }
 
     public void SetParent(Transform parent) {
-        rectTransform.SetParent(parent,false);
+        rectTransform.SetParent(parent, false);
     }
 
     public void SetCartSO(CardSO cardSO) {

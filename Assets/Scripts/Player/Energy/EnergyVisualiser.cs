@@ -9,6 +9,10 @@ public class EnergyVisualiser : MonoBehaviour {
 
     private void Start() {
         EnergyController.OnEnergyChanged += UpdateEnergy;
+        UpdateEnergy();
+    }
+    private void OnDestroy() {
+        EnergyController.OnEnergyChanged -= UpdateEnergy;
     }
 
     private void UpdateEnergy() {
