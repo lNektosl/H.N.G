@@ -28,6 +28,8 @@ public class PlayerInput : MonoBehaviour{
     private void OnDestroy() {
         inputActions.Player.Move.performed -= Move_performed;
         inputActions.Player.Select.performed -= Select_performed;
+
+        inputActions.Player.Select.performed -= Select_performed;
     }
 
     private void Select_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {

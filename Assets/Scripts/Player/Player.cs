@@ -2,16 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour {
     public static Player Instance { get; private set; }
 
     [SerializeField] private PlayerInput input;
-    [SerializeField] private LayerMask mask;
+
+
+    private MyGrid grid;
+    private MyTile tile;
 
     public static event Action<int> OnMoved;
 
-    private float moveDistance = 1f;
     private float timeGapBetweenMovment = 0.3f;
     private int moveCost = 1;
     private bool isMoving = false;
@@ -20,14 +23,27 @@ public class Player : MonoBehaviour {
     public void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(this);
-        } else {
+        } else {    
             Instance = this;
         }
     }
 
     private void Start() {
+        grid = MyGrid.Instance;
+
         input.OnMovePerformed += StartMovement;
         input.OnMoveCanceled += StopMovement;
+
+        StartCoroutine(AwaitGrid());
+    }
+
+    private IEnumerator AwaitGrid() {
+        while (!grid.isTilesGenerated) {
+            yield return null;
+        }
+        tile = grid.GetTile((Vector2)transform.position);
+        tile.SetIsOccupied(true);
+
     }
 
     private void FixedUpdate() {
@@ -45,7 +61,11 @@ public class Player : MonoBehaviour {
         Vector2 dir = input.GetVector2();
 
         if (IsCanMove(dir) && EnergyController.Instance.GetCurrentEnergy() >= moveCost) {
-            transform.position += (Vector3)dir;
+            tile.SetIsOccupied(false);
+            Vector2 nextPosition = (Vector2)transform.position + dir;
+            tile = grid.GetTile(nextPosition);
+            tile.SetIsOccupied(true);
+            transform.position = tile.GetVector2PositionWithOffset();
             isReadyToMove = false;
             OnMoved?.Invoke(moveCost);
             StartCoroutine(ResetIsReadyToMove());
@@ -67,16 +87,18 @@ public class Player : MonoBehaviour {
 
     private bool IsCanMove(Vector2 dir) {
 
+
+
         if (!isReadyToMove)
             return false;
-        if (dir.x == dir.y)
+        if (Mathf.Abs(dir.x) == Mathf.Abs(dir.y))
             return false;
 
-        RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, dir, moveDistance, ~mask);
-
-        if (hit.collider != null) {
+        Vector2 nextPosition = (Vector2)transform.position + dir;
+        MyTile nextTile = grid.GetTile(nextPosition);
+        if (!nextTile.IsAvailable())
             return false;
-        }
+
         return true;
     }
 }
