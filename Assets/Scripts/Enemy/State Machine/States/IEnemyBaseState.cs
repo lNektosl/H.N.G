@@ -2,9 +2,7 @@ using UnityEngine;
 
 public interface IEnemyBaseState {
 
-    void EnterState(Enemy enemy,EnemyStateMachine stateMachine);
+    void EnterState();
     void UpdateState();
     void Execute();
-
-    bool IsAvailable();
 }

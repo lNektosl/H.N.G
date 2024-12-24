@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyChaseState : IEnemyBaseState {
+public class EnemyDeadState : IEnemyBaseState {
     public void EnterState() {
         throw new System.NotImplementedException();
     }

@@ -3,21 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class AttackVisualaiser : MonoBehaviour {
 
+
+    [SerializeField] private GameObject highlightTile;
+
     private Player player;
-    private MyGrid grid;
-    private IList<MyTile> tilesList = new List<MyTile>();
+    private IList<Vector2> tilesList = new List<Vector2>();
+    private IList<GameObject> visualisedTiles = new List<GameObject>();
     private Card selectedCard;
-    private Vector2 lastPosition;
     private Vector2 initialPosition;
     private Vector2 direction;
 
     private void Start() {
         player = Player.Instance;
-        grid = MyGrid.Instance;
 
         CardManager.OnSelected += Card_OnSelected;
         CardManager.OnUnselected += Card_OnUnhovered;
@@ -37,7 +37,6 @@ public class AttackVisualaiser : MonoBehaviour {
 
     private void Card_OnSelected(Card card) {
         selectedCard = card;
-        lastPosition = Vector2.zero;
         UpdateVisualisation();
     }
 
@@ -48,31 +47,28 @@ public class AttackVisualaiser : MonoBehaviour {
 
     private void UpdateVisualisation() {
         GetCardTiles();
+        RemoveVisualistion();
         VisualiseTiles();
     }
 
     private void GetCardTiles() {
-        RecalculateInitialPosition();
-        if (selectedCard is AttackCard attackCard && lastPosition != initialPosition) {
-            RemoveVisualistion();
-            tilesList = attackCard.GetTiles(initialPosition, direction, grid);
-            SetLastPosition();
+        if (selectedCard is AttackCard attackCard) {
+            RecalculateInitialPosition();
+            tilesList = attackCard.GetTiles(initialPosition, direction);
         }
     }
 
     private void VisualiseTiles() {
-        foreach (var tile in tilesList) {
-            if (tile != null)
-                tile.SetColor(Color.red);
+        foreach (var tilePos in tilesList) {
+            visualisedTiles.Add(Instantiate(highlightTile, tilePos, Quaternion.identity));
         }
     }
 
     private void RemoveVisualistion() {
-        foreach (var tile in tilesList) {
-            if (tile != null)
-                tile.ResetColor();
+        foreach (var tile in visualisedTiles) {
+            Destroy(tile);
         }
-        tilesList.Clear();
+        visualisedTiles.Clear();
     }
 
 
@@ -93,7 +89,4 @@ public class AttackVisualaiser : MonoBehaviour {
         }
     }
 
-    private void SetLastPosition() {
-        lastPosition = initialPosition;
-    }
 }

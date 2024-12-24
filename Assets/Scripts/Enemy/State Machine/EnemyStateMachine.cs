@@ -7,31 +7,22 @@ public class EnemyStateMachine : MonoBehaviour {
     private IEnemyBaseState currentState;
     [SerializeField] LayerMask playerLayer;
 
-    public EnemyPatrolState patrolState { get; private set; }
-    public EnemyAggresiveState aggresiveState {  get; private set; }
-    public EnemyChaseState chaseState { get; private set; }
-    public EnemyStuckState stuckState { get; private set; }
-
     private void Start() {
-        patrolState = new EnemyPatrolState();
-        aggresiveState = new EnemyAggresiveState();
-        chaseState = new EnemyChaseState();
-        stuckState = new EnemyStuckState();
-
         enemy = GetComponent<Enemy>();
 
-        SwitchState(patrolState);
+        SwitchState(new EnemyPatrolState(enemy, this));
     }
 
     private void FixedUpdate() {
-        if (enemy.IsActive() && enemy.IsReadyToMakeAction() && currentState.IsAvailable()) {
+        if (enemy.IsActive() && enemy.IsReadyToMakeAction()) {
+            enemy.SpendEnergy();
             currentState.Execute();
         }
     }
 
     public void SwitchState(IEnemyBaseState state) {
     currentState = state;
-    currentState.EnterState(enemy, this);
+    currentState.EnterState();
     }
 
 }

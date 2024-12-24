@@ -10,7 +10,7 @@ public class EnemyManager : MonoBehaviour {
 
 
 
-    private int enemyCount = 2;
+    private int enemyCount = 1;
     private int enemyEndedTurn = 0;
     private void Start() {
         Enemy.OnEnergyZero += EnemyEndTurn;

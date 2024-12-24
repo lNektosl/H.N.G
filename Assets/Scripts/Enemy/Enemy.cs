@@ -1,60 +1,45 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Enemy : MonoBehaviour {
+    [SerializeField] private LayerMask mask;
+    [SerializeField] private LayerMask playerLayerMask;
+    [SerializeField] private float awarnesRange;
 
     public static event Action OnEnergyZero;
 
-    public EnemySO so;
-    public EnemyAwarnes awarnes;
-    public EnemyMovement movement;
-
-    private int hp;
-    private int maxEnergy;
+    private int maxEnergy = 2;
     private int currentEnergy = 0;
-    private MyGrid grid;
+    private float checksFrequency = 0.5f;
+
+    private Vector2 lastSeenPlayerPosition;
 
     private bool isActive = false;
     private bool isReadyToMakeAction = true;
-
+    private bool isPlayerInSight = false;
+    private bool isAwareOfThePlayer = false;
+    private bool isTimeToCheckForPlayer = true;
 
     private void Start() {
-        grid = MyGrid.Instance;
-        hp = so.hp;
-        maxEnergy = so.energy;
         TurnManager.OnEnemyTurnStart += ResetEnergy;
-        StartCoroutine(AwaitGrid());
-    }
-
-    private IEnumerator AwaitGrid() {
-        while (!grid.isTilesGenerated) {
-            yield return null;
-        }
-        movement.Initiate(grid, this);
-        awarnes.Initiate(grid, so);
     }
 
     private void OnDestroy() {
         TurnManager.OnEnemyTurnStart -= ResetEnergy;
     }
 
-    public void SpendEnergy() {
-        currentEnergy--;
-        if (currentEnergy == 0) {
-            OnEnergyZero?.Invoke();
-            isActive = false;
+    private void FixedUpdate() {
+        if (isTimeToCheckForPlayer) {
+            CheckIfPlayerInAwarenesRange();
         }
-        isReadyToMakeAction = false;
-        StartCoroutine(ResetIsReadyToMakeAction());
     }
 
-    public void SpendEnergy(int e) {
-        currentEnergy -= e;
+    public void SpendEnergy() {
+        currentEnergy--;
         if (currentEnergy == 0) {
             OnEnergyZero?.Invoke();
             isActive = false;
@@ -68,26 +53,58 @@ public class Enemy : MonoBehaviour {
         isActive = true;
     }
 
-    public void Wait() {
-        isReadyToMakeAction = false;
-        StartCoroutine(ResetIsReadyToMakeAction());
-    }
-
     private IEnumerator ResetIsReadyToMakeAction() {
         yield return new WaitForSeconds(1f);
         isReadyToMakeAction = true;
+    }
+
+    private void CheckIfPlayerInAwarenesRange() {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 5, playerLayerMask);
+        foreach (Collider2D collider in colliders) {
+            CheckIfCanSeePlayer(collider);
+        }
+
+        isTimeToCheckForPlayer = false;
+        StartCoroutine(ResetIsTimeToCheckForPlayer());
+    }
+
+    private void CheckIfCanSeePlayer(Collider2D collider) {
+        Vector2 direction = (collider.transform.position - transform.position).normalized;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, awarnesRange, ~mask);
+
+        if (hit.collider != null && hit.collider.CompareTag("Player")) {
+            isPlayerInSight = true;
+            isAwareOfThePlayer = true;
+            lastSeenPlayerPosition = hit.collider.transform.position;
+            Debug.Log(lastSeenPlayerPosition);
+        } else {
+            isPlayerInSight = false;
+        }
+    }
+
+    private IEnumerator ResetIsTimeToCheckForPlayer() {
+        yield return new WaitForSeconds(checksFrequency);
+        isTimeToCheckForPlayer = true;
     }
 
     public bool IsReadyToMakeAction() {
         return isReadyToMakeAction;
     }
 
-    public bool isEnoughEnergy(int e) {
-        return e <= currentEnergy;
-    }
     public bool IsActive() {
         return isActive;
     }
 
+    public bool IsPlayerInSight() {
+        return isPlayerInSight;
+    }
+
+    public bool IsAwareOfThePlayer() {
+        return isAwareOfThePlayer;
+    }
+
+    public void ResetIsAwareOfThePlater() {
+        isAwareOfThePlayer = false;
+    }
 
 }

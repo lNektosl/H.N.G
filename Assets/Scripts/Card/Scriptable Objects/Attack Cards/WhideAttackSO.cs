@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
-using Vector2 = UnityEngine.Vector2;
 
 [CreateAssetMenu(fileName = "New Whide Attack Card", menuName ="Card/Attack Card/Whide Attack")]
 public class WhideAttackSO : AttackCardSO, IAttackStrategy {
@@ -11,17 +9,17 @@ public class WhideAttackSO : AttackCardSO, IAttackStrategy {
 
     public int width;
     
-    public List<MyTile> GetAttackTiles(Vector2 initialPosition, Vector2 direction, MyGrid grid) {
-        List<MyTile> tiles = new();
+    public List<Vector2> GetAttackTiles(Vector2 initialPosition, Vector2 direction) {
+        List<Vector2> tiles = new();
         int range = (width - 1) / 2;
 
         if (Mathf.Abs(direction.x) <= Mathf.Abs(direction.y)) {
             for (int i = -range; i <= range; i++) {
 
-                Vector2 vector = new Vector2(initialPosition.x + i, initialPosition.y);
-                MyTile tile = grid.GetTile(vector);
+                Vector2 tile = new Vector2(initialPosition.x + i, initialPosition.y);
 
-                if (tile == null || !tile.isAttackable) continue;
+                Collider2D collider = Physics2D.OverlapPoint(tile);
+                if (collider != null && collider.name == "Wall") continue;
 
                 tiles.Add(tile);
             }
@@ -29,17 +27,16 @@ public class WhideAttackSO : AttackCardSO, IAttackStrategy {
         else {
             for (int i = -range; i <= range; i++) {
 
-                Vector2 vector = new Vector2(initialPosition.x, initialPosition.y + i);
+                Vector2 tile = new Vector2(initialPosition.x, initialPosition.y + i);
 
-                MyTile tile = grid.GetTile(vector);
-
-                if (tile == null || !tile.isAttackable) continue;
+                Collider2D collider = Physics2D.OverlapPoint(tile);
+                if (collider != null && collider.name == "Wall") continue;
 
                 tiles.Add(tile);
             }
         }
 
-        return new List<MyTile>(tiles);
+        return new List<Vector2>(tiles);
     }
 
     public GameObject GetAttackPrefab() {
