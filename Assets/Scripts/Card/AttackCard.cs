@@ -4,7 +4,7 @@ using UnityEngine;
 public class AttackCard : Card {
 
     private Vector2? initialPosition;
-    private List<Vector2> tiles = new();
+    private List<MyTile> tiles = new();
     private IAttackStrategy strategy;
 
 
@@ -14,19 +14,19 @@ public class AttackCard : Card {
         }
     }
 
-    public List<Vector2> GetTiles(Vector2 initialPosition, Vector2 direction) {
+    public List<MyTile> GetTiles(Vector2 initialPosition, Vector2 direction, MyGrid grid) {
 
         if (this.initialPosition.HasValue && this.initialPosition == initialPosition) return tiles;
         tiles.Clear();
 
         this.initialPosition = initialPosition;
-        tiles = strategy.GetAttackTiles(initialPosition, direction);
-        return new List<Vector2>(tiles);
+        tiles = strategy.GetAttackTiles(initialPosition, direction, grid);
+        return new List<MyTile>(tiles);
     }
 
 
     public override void Use() {
-        GameObject attackPrefab = Instantiate(strategy.GetAttackPrefab(), (Vector3)tiles[0], Quaternion.identity);
+        GameObject attackPrefab = ObjectPool.Instance.GetObject();
         IAttack attack = attackPrefab.GetComponent<IAttack>();
         attack.Innitiate(tiles);
         base.Use();

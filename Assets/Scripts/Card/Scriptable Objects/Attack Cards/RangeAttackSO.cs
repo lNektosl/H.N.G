@@ -13,22 +13,21 @@ public class RangeAttackSO : AttackCardSO, IAttackStrategy {
 
 
 
-    public List<Vector2> GetAttackTiles(Vector2 initialPosition, Vector2 direction) {
+    public List<MyTile> GetAttackTiles(Vector2 initialPosition, Vector2 direction, MyGrid grid) {
 
-        List<Vector2> tiles = new();
+        List<MyTile> tiles = new();
 
         if (Mathf.Abs(direction.x) <= Mathf.Abs(direction.y)) {
             for (int i = gap; i < range + gap; i++) {
-                Vector2 tile = new(initialPosition.x, initialPosition.y + (direction.y >= 0 ? i : -i));
+                Vector2 vector = new(initialPosition.x, initialPosition.y + (direction.y >= 0 ? i : -i));
 
-                Collider2D collider = Physics2D.OverlapPoint(tile);
+                MyTile tile = grid.GetTile(vector);
 
-                if (collider != null && collider.name == "Wall") break;
+                if (tile == null || !tile.isAttackable) break;
 
                 tiles.Add(tile);
 
-
-                if (collider != null && collider.name != "Wall" && !isPiercing) break;
+                if (tile != null && tile.tileType != TileType.FLOOR && !isPiercing) break;
 
             }
         }
@@ -36,20 +35,21 @@ public class RangeAttackSO : AttackCardSO, IAttackStrategy {
             for (int i = 0; i < range; i++) {
 
 
-                Vector2 tile = new Vector2(initialPosition.x + (direction.x >= 0 ? i : -i), initialPosition.y);
+                Vector2 vector = new Vector2(initialPosition.x + (direction.x >= 0 ? i : -i), initialPosition.y);
 
+                MyTile tile = grid.GetTile(vector);
 
-                Collider2D collider = Physics2D.OverlapPoint(tile);
-
-                if (collider != null && collider.name == "Wall") break;
+                if (tile == null || !tile.isAttackable)
+                    break;
 
                 tiles.Add(tile);
 
-                if (collider != null && collider.name != "Wall" && !isPiercing) break;
+                if (tile != null && tile.tileType != TileType.FLOOR && !isPiercing)
+                    break;
             }
         }
 
-        return new List<Vector2>(tiles);
+        return new List<MyTile>(tiles);
     }
 
     public GameObject GetAttackPrefab() {

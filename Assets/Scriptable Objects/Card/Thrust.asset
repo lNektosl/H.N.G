@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96b0934859b0d5348a6f859b24a3688e, type: 3}
+  m_Name: Thrust
+  m_EditorClassIdentifier: 
+  cardName: Thrust
+  description: Attack's 2 tilles forward
+  energy: 1
+  sprite: {fileID: 0}
+  damage: 1
+  prefab: {fileID: 4136068449032476453, guid: ddea5a7e29107ad4c8b70edbd6d1a4d5, type: 3}
+  range: 2
+  gap: 0
+  isPiercing: 0
