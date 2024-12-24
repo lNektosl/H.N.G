@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = "New Enemy Attack", menuName = "Enemy/Attack/RangeLineAttack")]
-public class RangeLineAttackSO : EnemyAbilitySO, IAttackStrategy, IAttackPositionStratagy {
+public class RangeLineAttackSO : EnemyAbilitySO, IAttackStrategy, IAttackPositionStratagy, IAttackAbility {
     [SerializeField] GameObject prefab;
     public int damage;
     public int range;
@@ -55,13 +55,11 @@ public class RangeLineAttackSO : EnemyAbilitySO, IAttackStrategy, IAttackPositio
     public List<MyTile> GetAttackPositions(MyTile targetTile, MyGrid grid) {
         List<MyTile> tiles = new List<MyTile>();
         Vector2 targetVector = targetTile.GetVector2PositionWithOffset();
-        Debug.Log(targetVector);
 
         tiles.AddRange(GetTilesFromPosition(new Vector2(targetVector.x, targetVector.y + gap), "y"));
         tiles.AddRange(GetTilesFromPosition(new Vector2(targetVector.x, targetVector.y - gap), "-y"));
         tiles.AddRange(GetTilesFromPosition(new Vector2(targetVector.x + gap, targetVector.y), "x"));
         tiles.AddRange(GetTilesFromPosition(new Vector2(targetVector.x - gap, targetVector.y), "-x"));
-        Debug.Log(tiles.Count);
         return new List<MyTile>(tiles);
     }
 
@@ -94,4 +92,7 @@ public class RangeLineAttackSO : EnemyAbilitySO, IAttackStrategy, IAttackPositio
         return tilesToFind;
     }
 
+    public int GetDamage() {
+        return damage;
+    }
 }

@@ -14,8 +14,14 @@ public class EnemyManager : MonoBehaviour {
     private int enemyEndedTurn = 0;
     private void Start() {
         Enemy.OnEnergyZero += EnemyEndTurn;
+        Enemy.OnDie += RemoveEnemy;
         TurnManager.OnEnemyTurnStart += EnemyTurnStart;
     }
+
+    private void RemoveEnemy() {
+        enemyCount--;
+    }
+
     private void OnDestroy() {
         Enemy.OnEnergyZero -= EnemyEndTurn;
         TurnManager.OnEnemyTurnStart -= EnemyTurnStart;

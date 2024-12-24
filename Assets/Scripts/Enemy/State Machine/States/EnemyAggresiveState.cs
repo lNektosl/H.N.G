@@ -48,7 +48,6 @@ public class EnemyAggresiveState : IEnemyBaseState {
         Dictionary<EnemyAbilitySO, List<MyTile>> attacks = enemy.so.GetAttackAndTiles(enemy.awarnes.GetPlayerPosition(), MyGrid.Instance);
         float closestDistance = float.MaxValue;
         foreach (var entry in attacks) {
-            Debug.Log(entry.Key.name + " " + entry.Value.Count);
             foreach (MyTile tile in entry.Value) {
                 float distance = Vector2.Distance(enemy.transform.position, tile.GetVector2PositionWithOffset());
                 if (enemy.movement.GetCurrentTile() == tile) {
@@ -73,7 +72,6 @@ public class EnemyAggresiveState : IEnemyBaseState {
 
     }
     private void Attack() {
-        Debug.Log("Attack");
         if (enemy.isEnoughEnergy(currentStratagy.energy) && !isUsedAbility) {
             if (currentStratagy is IAttackStrategy strategy) {
 
@@ -84,7 +82,9 @@ public class EnemyAggresiveState : IEnemyBaseState {
                 GameObject attackPrefab = ObjectPool.Instance.GetObject();
                 
                 IAttack attack = attackPrefab.GetComponent<IAttack>();
-                attack.Innitiate(tiles);
+                if (currentStratagy is IAttackAbility ab) {
+                    attack.Innitiate(tiles, ab.GetDamage()); 
+                }
                 isUsedAbility = true;
                 enemy.SpendEnergy(currentStratagy.energy);
 

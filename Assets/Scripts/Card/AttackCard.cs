@@ -5,12 +5,12 @@ public class AttackCard : Card {
 
     private Vector2? initialPosition;
     private List<MyTile> tiles = new();
-    private IAttackStrategy strategy;
+    private AttackCardSO attackCardSO;
 
 
     protected override void AddToStart() {
-        if (strategy == null && cardSO is IAttackStrategy attack) { 
-            strategy = attack; 
+        if (attackCardSO == null && cardSO is AttackCardSO attack) {
+            attackCardSO = attack; 
         }
     }
 
@@ -20,7 +20,10 @@ public class AttackCard : Card {
         tiles.Clear();
 
         this.initialPosition = initialPosition;
+        
+        if(attackCardSO is IAttackStrategy strategy)
         tiles = strategy.GetAttackTiles(initialPosition, direction, grid);
+        
         return new List<MyTile>(tiles);
     }
 
@@ -28,7 +31,7 @@ public class AttackCard : Card {
     public override void Use() {
         GameObject attackPrefab = ObjectPool.Instance.GetObject();
         IAttack attack = attackPrefab.GetComponent<IAttack>();
-        attack.Innitiate(tiles);
+        attack.Innitiate(tiles,attackCardSO.damage);
         base.Use();
     }
 }

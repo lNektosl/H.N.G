@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = "New Enemy Attack", menuName = "Enemy/Attack/InTileAttack")]
-public class InTileAttackSO : EnemyAbilitySO, IAttackStrategy, IAttackPositionStratagy {
+public class InTileAttackSO : EnemyAbilitySO, IAttackStrategy, IAttackPositionStratagy,IAttackAbility {
     [SerializeField] GameObject prefab;
     public int damage;
     public int range;
@@ -28,5 +28,9 @@ public class InTileAttackSO : EnemyAbilitySO, IAttackStrategy, IAttackPositionSt
             }
         }
         return new(tiles);
+    }
+
+    public int GetDamage() {
+        return damage;
     }
 }

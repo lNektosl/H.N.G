@@ -1097,6 +1097,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8559274092701589008, guid: a16dc78a77828584795bc521d73b31b7, type: 3}
+      propertyPath: hp
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8559274092701589008, guid: a16dc78a77828584795bc521d73b31b7, type: 3}
       propertyPath: grid
       value: 
       objectReference: {fileID: 2975740622385786918, guid: 5530bc201e1fbb7408f5a5b19a6bfd0d, type: 3}

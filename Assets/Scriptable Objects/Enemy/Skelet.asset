@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Skelet
   energy: 3
-  hp: 5
+  hp: 2
   baseAwarnes: 5
   attacks:
   - {fileID: 11400000, guid: c5989d754d0fe174596cf8d78992f975, type: 2}

@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour, IAttackble {
     public static Player Instance { get; private set; }
 
     [SerializeField] private PlayerInput input;
+    [SerializeField] private int hp;
 
 
     private MyGrid grid;
@@ -100,5 +101,17 @@ public class Player : MonoBehaviour {
             return false;
 
         return true;
+    }
+
+    public void TakeDameage(int damage) {
+        hp -= damage;
+        if (hp <= 0) {
+            Die();
+        }
+    }
+
+    private void Die() {
+        this.gameObject.SetActive(false);
+        Destroy(this);
     }
 }

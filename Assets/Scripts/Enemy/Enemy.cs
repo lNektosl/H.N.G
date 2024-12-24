@@ -6,9 +6,10 @@ using UnityEngine.UI;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour, IAttackble {
 
     public static event Action OnEnergyZero;
+    public static event Action OnDie;
 
     public EnemySO so;
     public EnemyAwarnes awarnes;
@@ -89,5 +90,16 @@ public class Enemy : MonoBehaviour {
         return isActive;
     }
 
+    public void TakeDameage(int damage) {
+        hp -= damage;
+        if (hp <= 0) {
+            Die();
+        }
+    }
 
+    private void Die() {
+        OnDie?.Invoke();
+        gameObject.SetActive(false);
+        Destroy(this);
+    }
 }
