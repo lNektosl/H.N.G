@@ -9,15 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96b0934859b0d5348a6f859b24a3688e, type: 3}
-  m_Name: Thrust
+  m_Script: {fileID: 11500000, guid: 62d91d4d1c2864a43a0ac832242799d4, type: 3}
+  m_Name: ThrustTest
   m_EditorClassIdentifier: 
-  cardName: Thrust
+  abilityName: Thrust
   description: Attack's 2 tilles forward
   energy: 1
   sprite: {fileID: 0}
-  damage: 1
+  type: 0
   prefab: {fileID: 4136068449032476453, guid: ddea5a7e29107ad4c8b70edbd6d1a4d5, type: 3}
+  damage: 1
   range: 2
   gap: 0
   isPiercing: 0

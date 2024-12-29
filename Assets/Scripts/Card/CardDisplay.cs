@@ -13,17 +13,22 @@ public class CardDisplay : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI energyText;
     [SerializeField] private Image artworkImage;
 
-    public void Initialize(CardSO cardSO) {
-        if (cardSO is AttackCardSO attackCardSO) {
-        SetAttackCard(attackCardSO);
+    public void Initialize(AbilitySO abilitySO) {
+        if (abilitySO.type == AbilityType.ATTACK) {
+        SetAttackCard(abilitySO);
         }
     }
 
-    private void SetAttackCard(AttackCardSO cardSO) {
-        nameText.SetText(cardSO.cardName);
-        descriptionText.SetText(cardSO.description);
-        damageText.SetText(cardSO.damage.ToString());
-        energyText.SetText(cardSO.energy.ToString());
-        artworkImage.sprite = cardSO.sprite;
+    private void SetAttackCard(AbilitySO abilitySO) {
+        nameText.SetText(abilitySO.name);
+        descriptionText.SetText(abilitySO.description);
+        energyText.SetText(abilitySO.energy.ToString());
+        artworkImage.sprite = abilitySO.sprite;
+
+        if (abilitySO is IAttackAbility ability) {
+            damageText.SetText(ability.GetDamage().ToString());
+        } else {
+            Debug.LogError("ain't attack ability in Attack card visualisation");
+        }
     }
 }

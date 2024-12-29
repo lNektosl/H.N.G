@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler {
 
-    [SerializeField] protected CardSO cardSO;
+    [SerializeField] protected AbilitySO abilitySO;
     [SerializeField] protected RectTransform rectTransform;
     [SerializeField] protected CardDisplay cardDisplay;
 
@@ -65,8 +65,8 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
 
     }
 
-    public CardSO GetCardSO() {
-        return cardSO;
+    public AbilitySO GetCardSO() {
+        return abilitySO;
     }
 
     public virtual void Use() {
@@ -85,13 +85,13 @@ public class Card : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ID
         rectTransform.SetParent(parent, false);
     }
 
-    public void SetCartSO(CardSO cardSO) {
-        this.cardSO = cardSO;
+    public void SetCartSO(AbilitySO abilitySO) {
+        this.abilitySO = abilitySO;
         UpdateVisuale();
     }
 
     private void UpdateVisuale() {
-        cardDisplay.Initialize(cardSO);
+        cardDisplay.Initialize(abilitySO);
     }
 
     public RectTransform GetRectTransform() {

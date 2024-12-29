@@ -6,26 +6,25 @@ public class CardFactory : MonoBehaviour {
     [SerializeField] private GameObject attackCardPrefab;
 
 
-    private Dictionary<System.Type, GameObject> cardPrefabs;
+    private Dictionary<AbilityType, GameObject> cardPrefabs;
 
 
     private void Awake() {
-        cardPrefabs = new Dictionary<System.Type, GameObject>() {
-            { typeof(AttackCardSO), attackCardPrefab }
+        cardPrefabs = new Dictionary<AbilityType, GameObject>() {
+            { AbilityType.ATTACK, attackCardPrefab }
         };
     }
 
-    private GameObject GetCardPrefab(CardSO carSO) {
-        System.Type type = carSO.GetType().BaseType;
+    private GameObject GetCardPrefab(AbilitySO abilitySO) {
 
-        if (cardPrefabs.TryGetValue(type, out GameObject prefab)) {
+        if (cardPrefabs.TryGetValue(abilitySO.type, out GameObject prefab)) {
             return prefab;
         }
-        Debug.LogError($"No prefab found for card type: {type}");
+        Debug.LogError($"No prefab found for card type: {abilitySO.type}");
         return null;
     }
 
-    public Card CreateCard(CardSO carSO, RectTransform rectTransform) {
+    public Card CreateCard(AbilitySO carSO, RectTransform rectTransform) {
         GameObject cardPrefab = GetCardPrefab(carSO);
         GameObject cardGameObject = Instantiate(cardPrefab, rectTransform);
         cardGameObject.SetActive(false);

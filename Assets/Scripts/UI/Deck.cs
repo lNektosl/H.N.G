@@ -11,7 +11,7 @@ public class Deck : MonoBehaviour {
 
     public event Action<Card> OnDraw;
 
-    [SerializeField] private List<CardSO> innitialDeck;
+    [SerializeField] private List<AbilitySO> innitialDeck;
     [SerializeField] private DiscardPile discardPile;
     [SerializeField] private TextMeshProUGUI cardCounterer;
     [SerializeField] private CardFactory cardFactory;
@@ -30,7 +30,7 @@ public class Deck : MonoBehaviour {
 
 
     private void Innitiate() {
-        foreach (CardSO so in innitialDeck) {
+        foreach (AbilitySO so in innitialDeck) {
             {
                 Card card = cardFactory.CreateCard(so, rectTransform);
                 cards.Add(card);
@@ -39,8 +39,8 @@ public class Deck : MonoBehaviour {
         isInitialized = true;
     }
 
-    private void AddNewCard(CardSO cardSO) {
-        cards.Add(cardFactory.CreateCard(cardSO, rectTransform));
+    private void AddNewCard(AbilitySO abilitySO) {
+        cards.Add(cardFactory.CreateCard(abilitySO, rectTransform));
     }
 
     private void Shuffle() {
