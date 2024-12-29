@@ -81,7 +81,7 @@ public class EnemyAggresiveState : IEnemyBaseState {
                 List<MyTile> tiles = strategy.GetAttackTiles(enemy.movement.GetCurrentTile().GetVector2PositionWithOffset()+dir, dir, MyGrid.Instance);
                 GameObject attackPrefab = ObjectPool.Instance.GetObject();
                 
-                IAttack attack = attackPrefab.GetComponent<IAttack>();
+                IAttackProjectile attack = attackPrefab.GetComponent<IAttackProjectile>();
                 if (currentStratagy is IAttackAbility ab) {
                     attack.Innitiate(tiles, ab.GetDamage()); 
                 }

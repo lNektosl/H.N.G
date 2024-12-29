@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class ProjectilLogic : MonoBehaviour, IAttack {
+public class ProjectilLogic : MonoBehaviour, IAttackProjectile {
     [SerializeField] private float speed;
 
     private Vector2 endPoint;

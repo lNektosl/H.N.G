@@ -30,7 +30,7 @@ public class AttackCard : Card {
 
     public override void Use() {
         GameObject attackPrefab = ObjectPool.Instance.GetObject();
-        IAttack attack = attackPrefab.GetComponent<IAttack>();
+        IAttackProjectile attack = attackPrefab.GetComponent<IAttackProjectile>();
         attack.Innitiate(tiles,attackCardSO.damage);
         base.Use();
     }
