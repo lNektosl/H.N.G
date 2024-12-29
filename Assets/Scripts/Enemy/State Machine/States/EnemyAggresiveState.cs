@@ -7,7 +7,7 @@ public class EnemyAggresiveState : IEnemyBaseState {
     private MyTile closestTile;
     private MyTile lastPlayerTile;
     private float awarnesModifier = 2f;
-    private EnemyAbilitySO currentStratagy;
+    private AbilitySO currentStratagy;
 
     private bool isAvailable;
     private bool isUsedAbility;
@@ -45,7 +45,7 @@ public class EnemyAggresiveState : IEnemyBaseState {
     }
 
     private void ChoseAttackPosition() {
-        Dictionary<EnemyAbilitySO, List<MyTile>> attacks = enemy.so.GetAttackAndTiles(enemy.awarnes.GetPlayerPosition(), MyGrid.Instance);
+        Dictionary<AbilitySO, List<MyTile>> attacks = enemy.so.GetAttackAndTiles(enemy.awarnes.GetPlayerPosition(), MyGrid.Instance);
         float closestDistance = float.MaxValue;
         foreach (var entry in attacks) {
             foreach (MyTile tile in entry.Value) {

@@ -9,10 +9,10 @@ public class EnemySO : ScriptableObject {
     public int energy;
     public int hp;
     public float baseAwarnes;
-    public List<EnemyAbilitySO> attacks = new();
+    public List<AbilitySO> attacks = new();
 
-    public Dictionary<EnemyAbilitySO, List<MyTile>> GetAttackAndTiles(MyTile target, MyGrid grid) {
-        Dictionary<EnemyAbilitySO, List<MyTile>> attacksDic = new();
+    public Dictionary<AbilitySO, List<MyTile>> GetAttackAndTiles(MyTile target, MyGrid grid) {
+        Dictionary<AbilitySO, List<MyTile>> attacksDic = new();
         foreach (var attack in attacks) {
             if (attack is IAttackPositionStratagy stratagy) {
                 attacksDic[attack] = stratagy.GetAttackPositions(target, grid);

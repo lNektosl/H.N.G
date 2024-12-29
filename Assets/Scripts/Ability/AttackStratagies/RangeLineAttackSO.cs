@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = "New Enemy Attack", menuName = "Enemy/Attack/RangeLineAttack")]
-public class RangeLineAttackSO : EnemyAbilitySO, IAttackStrategy, IAttackPositionStratagy, IAttackAbility {
+public class RangeLineAttackSO : AbilitySO, IAttackStrategy, IAttackPositionStratagy, IAttackAbility {
     [SerializeField] GameObject prefab;
     public int damage;
     public int range;
