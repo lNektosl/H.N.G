@@ -2,7 +2,7 @@
 
 H.N.G is a Unity-based experimental project designed as a playground for building and testing complex interacting systems, gameplay mechanics, and algorithmic solutions.
 
-## The primary goal of this project is not just game development, but exploring:
+## The primary goal of this project is exploring:
 
 - Complex system interactions
 
@@ -13,22 +13,6 @@ H.N.G is a Unity-based experimental project designed as a playground for buildin
 - Data management inside real-time environments
 
 - Scalable and maintainable architecture in Unity
-
-Originally started as a gameplay prototype, the project evolved into a sandbox for experimenting with structured logic and system design patterns.
-
-# Project Purpose
-
-This project serves as:
-
-- A testing ground for gameplay systems
-
-- An experimentation environment for algorithms in real-time simulation
-
-- A practice platform for structured C# architecture inside Unity
-
-- A sandbox for designing interacting modular components
-
-Rather than focusing purely on visuals, the emphasis is on internal logic, scalability, and maintainability.
 
 # Core Technical Focus
 1. System Architecture
